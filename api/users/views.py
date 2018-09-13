@@ -2,8 +2,8 @@ from flask import request, Response
 from flask.views import MethodView
 from .models import *
 from flask import jsonify, g
-from .. import app
-import os, time
+# from .. import app
+# import os, time
 
 
 class Index(MethodView):
@@ -39,10 +39,13 @@ class Login(MethodView):
         self.pwd = request.form.get('pwd')
 
     def post(self):
-        result = User.query.filter_by(user_id=self.user_id).first()
-        if result is not None and result.verify_password(self.pwd):
-            return jsonify({"code": "200", "message": "success"})
-        return jsonify({"code": "500", "message": "fail"})
+        try:
+            result = User.query.filter_by(user_id=self.user_id).first()
+            if result is not None and result.verify_password(self.pwd):
+                return jsonify({"code": "200", "message": "success"})
+            return jsonify({"code": "500", "message": "fail"})
+        except Exception as e:
+            raise e
 
 
 # 获取token
@@ -53,8 +56,11 @@ class Token(MethodView):
 
     @auth.login_required
     def get(self):
-        token = g.user.generate_auth_token(600)
-        return jsonify({'token': token.decode('ascii'), 'duration': 600})
+        try:
+            token = g.user.generate_auth_token(600)
+            return jsonify({'token': token.decode('ascii'), 'duration': 600})
+        except Exception as e:
+            raise e
 
 
 class Logout(MethodView):
@@ -64,8 +70,11 @@ class Logout(MethodView):
 
     @auth.login_required
     def get(self):
-        g.user.generate_auth_token(1)
-        return jsonify({"code": "200", "message": "success"})
+        try:
+            g.user.generate_auth_token(1)
+            return jsonify({"code": "200", "message": "success"})
+        except Exception as e:
+            raise e
 
 
 class ChangePassword(MethodView):
@@ -75,11 +84,14 @@ class ChangePassword(MethodView):
         self.pwd = request.form.get('pwd')
 
     def post(self):
-        str_result = User.query.filter_by(user_id=self.user_id).first()
-        str_result.pwd = self.pwd
-        db.session.add(str_result)
-        db.session.commit()
-        return jsonify({"code": "200", "message": "success"})
+        try:
+            str_result = User.query.filter_by(user_id=self.user_id).first()
+            str_result.pwd = self.pwd
+            db.session.add(str_result)
+            db.session.commit()
+            return jsonify({"code": "200", "message": "success"})
+        except Exception as e:
+            raise e
 
 
 class LoginChangePassword(MethodView):
@@ -90,9 +102,13 @@ class LoginChangePassword(MethodView):
         self.new_pwd = request.form.get('new_pwd')
 
     def post(self):
-        result = User.query.filter_by(user_id=self.user_id).first()
-        if result is not None and result.verify_pwd(self.old_pwd):
-            result.pwd = self.new_pwd
-            db.session.add(result)
-            db.session.commit()
-            return jsonify({"code": "200", "message": "success"})
+        try:
+            result = User.query.filter_by(user_id=self.user_id).first()
+            if result is not None and result.verify_pwd(self.old_pwd):
+                result.pwd = self.new_pwd
+                db.session.add(result)
+                db.session.commit()
+                return jsonify({"code": "200", "message": "success"})
+        except Exception as e:
+            raise e
+

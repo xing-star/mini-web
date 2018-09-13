@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Service_Audio_Analysis_App/.idea/Service_Audio_Analysis_App.iml" filepath="$PROJECT_DIR$/../Service_Audio_Analysis_App/.idea/Service_Audio_Analysis_App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mini-web.iml" filepath="$PROJECT_DIR$/.idea/mini-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../zhijian/.idea/zhijian.iml" filepath="$PROJECT_DIR$/../zhijian/.idea/zhijian.iml" />
+    </modules>
+  </component>
+</project>
